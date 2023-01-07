@@ -15,6 +15,7 @@
 		isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
 		windowReady = false,
 		isNoviBuilder = false,
+		isUserLoggedIn = false,
 
 		plugins = {
 			bootstrapModal:          $( '.modal' ),
@@ -630,6 +631,13 @@
 				e.preventDefault();
 				e.stopPropagation();
 			});
+		}
+
+		if (!isUserLoggedIn) {
+			$("#panel_button").hide();
+
+		} else {
+			$("#login_button").text("Log out");
 		}
 
 	});
