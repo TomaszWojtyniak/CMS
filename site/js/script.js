@@ -90,66 +90,66 @@
 				}
 			}
 
-			// Enable custom pagination
-			if (c.attr('data-dots-custom')) {
-				c.on("initialized.owl.carousel", function (event) {
-					var carousel = $(event.currentTarget),
-						customPag = $(carousel.attr("data-dots-custom")),
-						active = 0;
-
-					if (carousel.attr('data-active')) {
-						active = parseInt(carousel.attr('data-active'), 10);
-					}
-
-					carousel.trigger('to.owl.carousel', [active, 300, true]);
-					customPag.find("[data-owl-item='" + active + "']").addClass("active");
-
-					customPag.find("[data-owl-item]").on('click', function (e) {
-						e.preventDefault();
-						carousel.trigger('to.owl.carousel', [parseInt(this.getAttribute("data-owl-item"), 10), 300, true]);
-					});
-
-					carousel.on("translate.owl.carousel", function (event) {
-						customPag.find(".active").removeClass("active");
-						customPag.find("[data-owl-item='" + event.item.index + "']").addClass("active")
-					});
-				});
-			}
-
-			c.on("initialized.owl.carousel", function () {
-				initLightGallery($('[data-lightgallery="group-owl"]'), 'lightGallery-in-carousel');
-				initLightGalleryItem($('[data-lightgallery="item-owl"]'), 'lightGallery-in-carousel');
-			});
-
-			c.owlCarousel({
-				autoplay: isNoviBuilder ? false : c.attr("data-autoplay") === "true",
-				loop: isNoviBuilder ? false : c.attr("data-loop") !== "false",
-				items: 1,
-				center: c.attr("data-center") === "true",
-				dotsContainer: c.attr("data-pagination-class") || false,
-				navContainer: c.attr("data-navigation-class") || false,
-				mouseDrag: isNoviBuilder ? false : c.attr("data-mouse-drag") !== "false",
-				nav: c.attr("data-nav") === "true",
-				dots: c.attr("data-dots") === "true",
-				dotsEach: c.attr("data-dots-each") ? parseInt(c.attr("data-dots-each"), 10) : false,
-				animateIn: c.attr('data-animation-in') ? c.attr('data-animation-in') : 'fadeIn',
-				animateOut: c.attr('data-animation-out') ? c.attr('data-animation-out') : 'fadeOut',
-				responsive: responsive,
-				navText: function () {
-					try {
-						return JSON.parse(c.attr("data-nav-text"));
-					} catch (e) {
-						return [];
-					}
-				}(),
-				navClass: function () {
-					try {
-						return JSON.parse(c.attr("data-nav-class"));
-					} catch (e) {
-						return ['owl-prev', 'owl-next'];
-					}
-				}()
-			});
+						// Enable custom pagination
+						if (c.attr('data-dots-custom')) {
+							c.on("initialized.owl.carousel", function (event) {
+								var carousel = $(event.currentTarget),
+									customPag = $(carousel.attr("data-dots-custom")),
+									active = 0;
+			
+								if (carousel.attr('data-active')) {
+									active = parseInt(carousel.attr('data-active'), 10);
+								}
+			
+								carousel.trigger('to.owl.carousel', [active, 300, true]);
+								customPag.find("[data-owl-item='" + active + "']").addClass("active");
+			
+								customPag.find("[data-owl-item]").on('click', function (e) {
+									e.preventDefault();
+									carousel.trigger('to.owl.carousel', [parseInt(this.getAttribute("data-owl-item"), 10), 300, true]);
+								});
+			
+								carousel.on("translate.owl.carousel", function (event) {
+									customPag.find(".active").removeClass("active");
+									customPag.find("[data-owl-item='" + event.item.index + "']").addClass("active")
+								});
+							});
+						}
+			
+						c.on("initialized.owl.carousel", function () {
+							initLightGallery($('[data-lightgallery="group-owl"]'), 'lightGallery-in-carousel');
+							initLightGalleryItem($('[data-lightgallery="item-owl"]'), 'lightGallery-in-carousel');
+						});
+			
+						c.owlCarousel({
+							autoplay: isNoviBuilder ? false : c.attr("data-autoplay") === "true",
+							loop: isNoviBuilder ? false : c.attr("data-loop") !== "false",
+							items: 1,
+							center: c.attr("data-center") === "true",
+							dotsContainer: c.attr("data-pagination-class") || false,
+							navContainer: c.attr("data-navigation-class") || false,
+							mouseDrag: isNoviBuilder ? false : c.attr("data-mouse-drag") !== "false",
+							nav: c.attr("data-nav") === "true",
+							dots: c.attr("data-dots") === "true",
+							dotsEach: c.attr("data-dots-each") ? parseInt(c.attr("data-dots-each"), 10) : false,
+							animateIn: c.attr('data-animation-in') ? c.attr('data-animation-in') : 'fadeIn',
+							animateOut: c.attr('data-animation-out') ? c.attr('data-animation-out') : 'fadeOut',
+							responsive: responsive,
+							navText: function () {
+								try {
+									return JSON.parse(c.attr("data-nav-text"));
+								} catch (e) {
+									return [];
+								}
+							}(),
+							navClass: function () {
+								try {
+									return JSON.parse(c.attr("data-nav-class"));
+								} catch (e) {
+									return ['owl-prev', 'owl-next'];
+								}
+							}()
+						});
 		}
 
 		/**
@@ -357,15 +357,6 @@
 			plugins.copyrightYear.text(initialDate.getFullYear());
 		}
 
-		// Owl carousel
-		if ( plugins.owl.length ) {
-			for ( var i = 0; i < plugins.owl.length; i++ ) {
-				var carousel = $( plugins.owl[ i ] );
-				plugins.owl[ i ].owl = carousel;
-				initOwlCarousel( carousel );
-			}
-		}
-
 		// WOW
 		if ($html.hasClass("wow-animation") && plugins.wow.length && !isNoviBuilder && isDesktop) {
 			new WOW().init();
@@ -379,189 +370,6 @@
 		// Regula
 		if (plugins.regula.length) {
 			attachFormValidator(plugins.regula);
-		}
-
-		// RD Mailform
-		if (plugins.rdMailForm.length) {
-			var i, j, k,
-				msg = {
-					'MF000': 'Successfully sent!',
-					'MF001': 'Recipients are not set!',
-					'MF002': 'Form will not work locally!',
-					'MF003': 'Please, define email field in your form!',
-					'MF004': 'Please, define type of your form!',
-					'MF254': 'Something went wrong with PHPMailer!',
-					'MF255': 'Aw, snap! Something went wrong.'
-				};
-
-			for (i = 0; i < plugins.rdMailForm.length; i++) {
-				var $form = $(plugins.rdMailForm[i]),
-					formHasCaptcha = false;
-
-				$form.attr('novalidate', 'novalidate').ajaxForm({
-					data: {
-						"form-type": $form.attr("data-form-type") || "contact",
-						"counter": i
-					},
-					beforeSubmit: function (arr, $form, options) {
-						if (isNoviBuilder)
-							return;
-
-						var form = $(plugins.rdMailForm[this.extraData.counter]),
-							inputs = form.find("[data-constraints]"),
-							output = $("#" + form.attr("data-form-output")),
-							captcha = form.find('.recaptcha'),
-							captchaFlag = true;
-
-						output.removeClass("active error success");
-
-						if (isValidated(inputs, captcha)) {
-
-							// veify reCaptcha
-							if (captcha.length) {
-								var captchaToken = captcha.find('.g-recaptcha-response').val(),
-									captchaMsg = {
-										'CPT001': 'Please, setup you "site key" and "secret key" of reCaptcha',
-										'CPT002': 'Something wrong with google reCaptcha'
-									};
-
-								formHasCaptcha = true;
-
-								$.ajax({
-									method: "POST",
-									url: "bat/reCaptcha.php",
-									data: {'g-recaptcha-response': captchaToken},
-									async: false
-								})
-									.done(function (responceCode) {
-										if (responceCode !== 'CPT000') {
-											if (output.hasClass("snackbars")) {
-												output.html('<p><span class="icon text-middle mdi mdi-check icon-xxs"></span><span>' + captchaMsg[responceCode] + '</span></p>')
-
-												setTimeout(function () {
-													output.removeClass("active");
-												}, 3500);
-
-												captchaFlag = false;
-											} else {
-												output.html(captchaMsg[responceCode]);
-											}
-
-											output.addClass("active");
-										}
-									});
-							}
-
-							if (!captchaFlag) {
-								return false;
-							}
-
-							form.addClass('form-in-process');
-
-							if (output.hasClass("snackbars")) {
-								output.html('<p><span class="icon text-middle fa fa-circle-o-notch fa-spin icon-xxs"></span><span>Sending</span></p>');
-								output.addClass("active");
-							}
-						} else {
-							return false;
-						}
-					},
-					error: function (result) {
-						if (isNoviBuilder)
-							return;
-
-						var output = $("#" + $(plugins.rdMailForm[this.extraData.counter]).attr("data-form-output")),
-							form = $(plugins.rdMailForm[this.extraData.counter]);
-
-						output.text(msg[result]);
-						form.removeClass('form-in-process');
-
-						if (formHasCaptcha) {
-							grecaptcha.reset();
-						}
-					},
-					success: function (result) {
-						if (isNoviBuilder)
-							return;
-
-						var form = $(plugins.rdMailForm[this.extraData.counter]),
-							output = $("#" + form.attr("data-form-output")),
-							select = form.find('select');
-
-						form
-							.addClass('success')
-							.removeClass('form-in-process');
-
-						if (formHasCaptcha) {
-							grecaptcha.reset();
-						}
-
-						result = result.length === 5 ? result : 'MF255';
-						output.text(msg[result]);
-
-						if (result === "MF000") {
-							if (output.hasClass("snackbars")) {
-								output.html('<p><span class="icon text-middle mdi mdi-check icon-xxs"></span><span>' + msg[result] + '</span></p>');
-							} else {
-								output.addClass("active success");
-							}
-						} else {
-							if (output.hasClass("snackbars")) {
-								output.html(' <p class="snackbars-left"><span class="icon icon-xxs mdi mdi-alert-outline text-middle"></span><span>' + msg[result] + '</span></p>');
-							} else {
-								output.addClass("active error");
-							}
-						}
-
-						form.clearForm();
-
-						if (select.length) {
-							select.select2("val", "");
-						}
-
-						form.find('input, textarea').trigger('blur');
-
-						setTimeout(function () {
-							output.removeClass("active error success");
-							form.removeClass('success');
-						}, 3500);
-					}
-				});
-			}
-		}
-
-		// lightGallery
-		if (plugins.lightGallery.length) {
-			for (var i = 0; i < plugins.lightGallery.length; i++) {
-				initLightGallery(plugins.lightGallery[i]);
-			}
-		}
-
-		// lightGallery item
-		if (plugins.lightGalleryItem.length) {
-			// Filter carousel items
-			var notCarouselItems = [];
-
-			for (var z = 0; z < plugins.lightGalleryItem.length; z++) {
-				if (!$(plugins.lightGalleryItem[z]).parents('.owl-carousel').length &&
-					!$(plugins.lightGalleryItem[z]).parents('.swiper-slider').length &&
-					!$(plugins.lightGalleryItem[z]).parents('.slick-slider').length) {
-					notCarouselItems.push(plugins.lightGalleryItem[z]);
-				}
-			}
-
-			plugins.lightGalleryItem = notCarouselItems;
-
-			for (var i = 0; i < plugins.lightGalleryItem.length; i++) {
-				initLightGalleryItem(plugins.lightGalleryItem[i]);
-			}
-		}
-
-		// Dynamic lightGallery
-		if (plugins.lightDynamicGalleryItem.length) {
-			for (var i = 0; i < plugins.lightDynamicGalleryItem.length; i++) {
-				initDynamicLightGallery(plugins.lightDynamicGalleryItem[i]);
-			}
 		}
 
 		// Tabs corporate
@@ -583,54 +391,7 @@
 						$('.modal').modal('hide');
 					}, 100);
 				});
-
-				$(galleryItem).find('[data-toggle="tab"]').on('click', function () {
-					$(galleryItem).find('.nav-tabs').animate({
-						height: "hide",
-						top: "-100px",
-						opacity: 0
-					}, 500);
-				});
-
-				$(galleryItem).find('.back-to-gallery').on('click', function () {
-					$(galleryItem).find('.nav-tabs').animate({
-						height: "show",
-						top: "0",
-						opacity: 1
-					}, 500);
-
-					$(galleryItem).find('.tab-pane').removeClass('active').addClass('fade');
-					$(galleryItem).find('.nav-link').removeClass('active');
-				});
-
-			} else {
-				$(galleryItem).find('.tab-pane:first').addClass('active show');
-				$(galleryItem).find('.nav-link:first').addClass('active');
 			}
-
-		}
-
-		// Modal custom
-		if (!isNoviBuilder) {
-			$('[data-toggle="modal"]').on("click", function () {
-				$('.hide-on-modal').addClass('hide').removeClass('fade show')
-			});
-			$('.modal').on('hide.bs.modal', function () {
-				$('.hide-on-modal').removeClass('hide').addClass('fade show');
-			});
-
-			$('#privacy').on('show.bs.modal', function () {
-				plugins.tabsCorporate.find('.tab-pane').removeClass('show');
-				$('.modal').modal('hide');
-			});
-			$('#privacy').on('hide.bs.modal', function () {
-				plugins.tabsCorporate.find('.tab-pane.active').addClass('show');
-			});
-		} else {
-			$("[data-dismiss='modal'], [data-toggle='modal']").on("click", function (e) {
-				e.preventDefault();
-				e.stopPropagation();
-			});
 		}
 
 		if (!isUserLoggedIn) {
@@ -638,7 +399,243 @@
 
 		} else {
 			$("#login_button").text("Log out");
+			loadMovieList();
 		}
 
+		$("#login_button").on("click", function() {
+			loadMovieList();
+			isUserLoggedIn = true;
+		});
+
+		function loadView() {
+
+			// Owl carousel
+			if ( plugins.owl.length ) {
+				for ( var i = 0; i < plugins.owl.length; i++ ) {
+					var carousel = $( plugins.owl[ i ] );
+					plugins.owl[ i ].owl = carousel;
+					initOwlCarousel( carousel );
+				}
+			}
+
+			// lightGallery
+			if (plugins.lightGallery.length) {
+				for (var i = 0; i < plugins.lightGallery.length; i++) {
+					initLightGallery(plugins.lightGallery[i]);
+				}
+			}
+
+			// lightGallery item
+			if (plugins.lightGalleryItem.length) {
+				// Filter carousel items
+				var notCarouselItems = [];
+
+				for (var z = 0; z < plugins.lightGalleryItem.length; z++) {
+					if (!$(plugins.lightGalleryItem[z]).parents('.owl-carousel').length &&
+						!$(plugins.lightGalleryItem[z]).parents('.swiper-slider').length &&
+						!$(plugins.lightGalleryItem[z]).parents('.slick-slider').length) {
+						notCarouselItems.push(plugins.lightGalleryItem[z]);
+					}
+				}
+
+				plugins.lightGalleryItem = notCarouselItems;
+
+				for (var i = 0; i < plugins.lightGalleryItem.length; i++) {
+					initLightGalleryItem(plugins.lightGalleryItem[i]);
+				}
+			}
+
+			// Dynamic lightGallery
+			if (plugins.lightDynamicGalleryItem.length) {
+				for (var i = 0; i < plugins.lightDynamicGalleryItem.length; i++) {
+					initDynamicLightGallery(plugins.lightDynamicGalleryItem[i]);
+				}
+			}
+
+			// Load gallery tabs
+			if (plugins.tabsCorporate.length) {
+				var item = $('.tabs-corporate > .nav-tabs .nav-link'),
+					galleryItem = plugins.tabsGallery;
+				if (!isNoviBuilder) {
+
+					$(galleryItem).find('[data-toggle="tab"]').on('click', function () {
+						$(galleryItem).find('.nav-tabs').animate({
+							height: "hide",
+							top: "-100px",
+							opacity: 0
+						}, 500);
+					});
+
+					$(galleryItem).find('.back-to-gallery').on('click', function () {
+						$(galleryItem).find('.nav-tabs').animate({
+							height: "show",
+							top: "0",
+							opacity: 1
+						}, 500);
+
+						$(galleryItem).find('.tab-pane').removeClass('active').addClass('fade');
+						$(galleryItem).find('.nav-link').removeClass('active');
+					});
+
+				} else {
+					$(galleryItem).find('.tab-pane:first').addClass('active show');
+					$(galleryItem).find('.nav-link:first').addClass('active');
+				}
+
+			}
+
+			// Modal custom
+			if (!isNoviBuilder) {
+				$('[data-toggle="modal"]').on("click", function () {
+					$('.hide-on-modal').addClass('hide').removeClass('fade show')
+				});
+				$('.modal').on('hide.bs.modal', function () {
+					$('.hide-on-modal').removeClass('hide').addClass('fade show');
+				});
+
+				$('#privacy').on('show.bs.modal', function () {
+					plugins.tabsCorporate.find('.tab-pane').removeClass('show');
+					$('.modal').modal('hide');
+				});
+				$('#privacy').on('hide.bs.modal', function () {
+					plugins.tabsCorporate.find('.tab-pane.active').addClass('show');
+				});
+			} else {
+				$("[data-dismiss='modal'], [data-toggle='modal']").on("click", function (e) {
+					e.preventDefault();
+					e.stopPropagation();
+				});
+			}
+		}
+
+		function loadMovieList() {
+			let text = {
+				"movie_lists": [
+					{
+						"list_id": 1,
+						"list_name": "Movies with Tom Hanks",
+						"description": "Description",
+						"movies": [
+							{
+								"movie_id": "1",
+								"movie_name": "Movie 1",
+								"year": 2022,
+								"category": "Drama",
+								"movie_rating": 5.0,
+								"movie_url" : "../sample-data/gump.jpg"
+							},
+							{
+								"movie_id": "2",
+								"movie_name": "Movie 2",
+								"year": 2021,
+								"category": "Drama",
+								"movie_rating": 4.0,
+								"movie_url" : "images/gallery-lifestyle-07-970x524.jpg"
+							},
+							{
+								"movie_id": "3",
+								"movie_name": "Movie 3",
+								"year": 2020,
+								"category": "Comedy",
+								"movie_rating": 3.6,
+								"movie_url" : "images/gallery-lifestyle-07-970x524.jpg"
+							}
+						]
+					},
+					{
+						"list_id": 2,
+						"list_name": "Harry Potter",
+						"description": "Description",
+						"movies": [
+							{
+								"movie_id": "1",
+								"movie_name": "Movie 1",
+								"year": 2022,
+								"category": "Drama",
+								"movie_rating": 5.0,
+								"movie_url" : "../sample-data/harry_potter_kamien.jpg"
+							},
+							{
+								"movie_id": "2",
+								"movie_name": "Movie 2",
+								"year": 2021,
+								"category": "Drama",
+								"movie_rating": 4.0,
+								"movie_url" : "images/gallery-lifestyle-07-970x524.jpg"
+							},
+							{
+								"movie_id": "3",
+								"movie_name": "Movie 3",
+								"year": 2020,
+								"category": "Comedy",
+								"movie_rating": 3.6,
+								"movie_url" : "images/gallery-lifestyle-07-970x524.jpg"
+							}
+						]
+					},
+					{
+						"list_id": 3,
+						"list_name": "Marvel",
+						"description": "Description",
+						"movies": [
+							{
+								"movie_id": "1",
+								"movie_name": "Avengers End Game",
+								"year": 2022,
+								"category": "Drama",
+								"movie_rating": 5.0,
+								"movie_url" : "../sample-data/avengers_end_game.jpg"
+							},
+							{
+								"movie_id": "2",
+								"movie_name": "Movie 2",
+								"year": 2021,
+								"category": "Drama",
+								"movie_rating": 4.0,
+								"movie_url" : "images/gallery-lifestyle-07-970x524.jpg"
+							},
+							{
+								"movie_id": "3",
+								"movie_name": "Movie 3",
+								"year": 2020,
+								"category": "Comedy",
+								"movie_rating": 3.6,
+								"movie_url" : "images/gallery-lifestyle-07-970x524.jpg"
+							}
+						]
+					}
+				]
+			}
+			var obj = $.parseJSON(JSON.stringify(text));
+			var list_names = [];
+			var all_movies_list = [];
+			var lists_ids = ["#lifestyle", "#portrait", "#fashion", "#nature", "#city", "#country"];
+			$.each(obj, function(key ,value) {
+				$.each(value, function(key, value) {
+					$("#main-gallery").append('<li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-gallery-' + value.list_id + '" data-toggle="tab"><img src="' + value.movies[0].movie_url +'" alt="" width="180" height="180"/><span>' + value.list_name + '</span></a></li>')
+					list_names.push(value.list_name);
+					var movies_list = [];
+					$.each(value.movies, function(key, value) {
+						movies_list.push(`<a class="gallery-item" href="` + value.movie_url + `" data-lightgallery="item">
+							<figure><img src="` + value.movie_url + `" alt="" width="970" height="524"/>
+							</figure>
+							<div class="caption"><span class="icon novi-icon fa-expand"></span></div>
+					    </a>`)
+					});
+					all_movies_list.push(movies_list);
+					movies_list = [];
+				});
+			});
+
+			list_names.forEach((element, index) => {
+				$(lists_ids[index] + "-name").text(element);
+			});
+
+			all_movies_list.forEach((element, index) => {
+				$(lists_ids[index] + "-list").append(element);
+			});
+			loadView();
+			
+		}
 	});
 }());
