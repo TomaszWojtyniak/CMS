@@ -1,0 +1,25 @@
+{
+    "movies": [
+        {
+            "movie_id": "1",
+            "movie_name": "Movie 1",
+            "year": 2022,
+            "category": "Drama",
+            "movie_rating": 5.0
+        },
+        {
+            "movie_id": "2",
+            "movie_name": "Movie 2",
+            "year": 2021,
+            "category": "Drama",
+            "movie_rating": 4.0
+        },
+        {
+            "movie_id": "3",
+            "movie_name": "Movie 3",
+            "year": 2020,
+            "category": "Comedy",
+            "movie_rating": 3.6
+        }
+    ]
+}
