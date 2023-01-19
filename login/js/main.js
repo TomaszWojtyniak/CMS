@@ -1,5 +1,5 @@
 
-(function($) {
+$(function(){
 
 	"use strict";
 
@@ -30,11 +30,71 @@
 		$("#confirm_password_button").hide()
 	}
 
+	$("#sign_in_button").on("click", function() {
+		if(isLoginPage) {
+			login();
+		} else {
+			register();
+		}
+	})
+
 
 	$("#sign_up_button").on("click", function() {
 		isLoginPage = !isLoginPage;
 		toggleLoginView(isLoginPage);
 	});
+
+	function login() {
+		var username = $("#username-field").val();
+		var password = $("#password-field").val();
+		$.ajax({
+			type: "POST",
+			url: "http://localhost:3000/login",
+			dataType: "json",
+			contentType: "application/json",
+			data: JSON.stringify({
+				"username": username,
+				"password": password
+			}),
+			success: function(data){
+				sessionStorage.setItem("access_token", data.access_token);
+				sessionStorage.setItem("username", username);
+				window.location.replace("../../site/index.html");
+			 },
+			 error: function(xhr, textStatus, error){
+				 alert("error")
+			 }
+		});
+
+	}
+
+	function register() {
+		var username = $("#username-field").val();
+		var password = $("#password-field").val();
+		var confirm_password = $("#confirm_password-field").val();
+		if (password == confirm_password) {
+			$.ajax({
+				type: "POST",
+				url: "http://localhost:3000/register",
+				contentType: "application/json",
+				dataType: 'json',
+				data: JSON.stringify({
+					"username": username,
+					"password": password
+				}),
+				success: function(){
+					alert("Registration successfull");
+					login();
+				},
+				error: function(xhr, textStatus, error){
+					alert("error")
+				}
+	
+			})
+		} else {
+			alert("Password and Confirm password dont match")
+		}
+	}
 
 	function toggleLoginView (loginViewState) {
 		if (loginViewState == true) {
@@ -53,4 +113,4 @@
 	}
 
 
-})(jQuery);
+});

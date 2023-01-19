@@ -1,7 +1,7 @@
 "use strict";
 $(function () {
 
-  loadMovieLists();
+  getUserInfo();
 
     $(document).on('click', '[data-toggle="lightbox"]', function(event) {
       event.preventDefault();
@@ -17,6 +17,31 @@ $(function () {
       $('.btn[data-filter]').removeClass('active');
       $(this).addClass('active');
     });
+
+    function getUserInfo() {
+      let username = sessionStorage.getItem("username");
+      let accessToken = sessionStorage.getItem("access_token");
+      $.ajax({
+        type: "GET",
+        url: "http://localhost:3000/username/" + username,
+        dataType: "json",
+        contentType: "application/json",
+        headers: {
+          "Authorization": "Bearer " + accessToken
+        },
+        success: function(data){
+          if (data[0].is_admin == true) {
+            $("#tables_nav_item").hide();
+            $("#charts_nav_item").hide();
+          }
+          $("#nav_name").text(username);
+          loadMovieLists();
+         },
+         error: function(xhr, textStatus, error){
+           alert("error")
+         }
+      });
+    }
 
     function loadMovieLists() {
       $.getJSON("../../sample-data/movie_list.json", function(data) {

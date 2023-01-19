@@ -16,6 +16,7 @@
 		windowReady = false,
 		isNoviBuilder = false,
 		isUserLoggedIn = false,
+		accessToken = sessionStorage.getItem("access_token"),
 
 		plugins = {
 			bootstrapModal:          $( '.modal' ),
@@ -394,18 +395,39 @@
 			}
 		}
 
-		if (!isUserLoggedIn) {
-			$("#panel_button").hide();
-
-		} else {
+		if (accessToken) {
 			$("#login_button").text("Log out");
 			loadMovieList();
+
+		} else {
+			$("#panel_button").hide();
 		}
 
 		$("#login_button").on("click", function() {
-			loadMovieList();
-			isUserLoggedIn = true;
-		});
+			let button_name = $("#login_button").text();
+			if (button_name == "Log out") {
+				$.ajax({
+					type: "POST",
+					url: "http://localhost:3000/logout",
+					dataType: "json",
+					contentType: "application/json",
+					headers: {
+						"Authorization": "Bearer " + accessToken
+					},
+					success: function(data){
+						alert("Log out successfull");
+					 },
+					 error: function(xhr, textStatus, error){
+						 alert("error")
+					 }
+				});
+				sessionStorage.clear();
+				isUserLoggedIn = false;
+				location.reload();
+			}
+		})
+
+
 
 		function loadView() {
 
