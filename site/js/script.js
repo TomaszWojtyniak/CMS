@@ -17,6 +17,10 @@
 		isNoviBuilder = false,
 		isUserLoggedIn = false,
 		accessToken = sessionStorage.getItem("access_token"),
+		lists_id = [],
+		lists_names = [],
+		lists_ids = ["#lifestyle", "#portrait", "#fashion", "#nature", "#city", "#country"],
+		all_movies_list = [],
 
 		plugins = {
 			bootstrapModal:          $( '.modal' ),
@@ -397,7 +401,7 @@
 
 		if (accessToken) {
 			$("#login_button").text("Log out");
-			loadMovieList();
+			getUserInfo();
 
 		} else {
 			$("#panel_button").hide();
@@ -530,134 +534,71 @@
 			}
 		}
 
-		function loadMovieList() {
-			let text = {
-				"movie_lists": [
-					{
-						"list_id": 1,
-						"list_name": "Movies with Tom Hanks",
-						"description": "Description",
-						"movies": [
-							{
-								"movie_id": "1",
-								"movie_name": "Movie 1",
-								"year": 2022,
-								"category": "Drama",
-								"movie_rating": 5.0,
-								"movie_url" : "../sample-data/gump.jpg"
-							},
-							{
-								"movie_id": "2",
-								"movie_name": "Movie 2",
-								"year": 2021,
-								"category": "Drama",
-								"movie_rating": 4.0,
-								"movie_url" : "images/gallery-lifestyle-07-970x524.jpg"
-							},
-							{
-								"movie_id": "3",
-								"movie_name": "Movie 3",
-								"year": 2020,
-								"category": "Comedy",
-								"movie_rating": 3.6,
-								"movie_url" : "images/gallery-lifestyle-07-970x524.jpg"
-							}
-						]
-					},
-					{
-						"list_id": 2,
-						"list_name": "Harry Potter",
-						"description": "Description",
-						"movies": [
-							{
-								"movie_id": "1",
-								"movie_name": "Movie 1",
-								"year": 2022,
-								"category": "Drama",
-								"movie_rating": 5.0,
-								"movie_url" : "../sample-data/harry_potter_kamien.jpg"
-							},
-							{
-								"movie_id": "2",
-								"movie_name": "Movie 2",
-								"year": 2021,
-								"category": "Drama",
-								"movie_rating": 4.0,
-								"movie_url" : "images/gallery-lifestyle-07-970x524.jpg"
-							},
-							{
-								"movie_id": "3",
-								"movie_name": "Movie 3",
-								"year": 2020,
-								"category": "Comedy",
-								"movie_rating": 3.6,
-								"movie_url" : "images/gallery-lifestyle-07-970x524.jpg"
-							}
-						]
-					},
-					{
-						"list_id": 3,
-						"list_name": "Marvel",
-						"description": "Description",
-						"movies": [
-							{
-								"movie_id": "1",
-								"movie_name": "Avengers End Game",
-								"year": 2022,
-								"category": "Drama",
-								"movie_rating": 5.0,
-								"movie_url" : "../sample-data/avengers_end_game.jpg"
-							},
-							{
-								"movie_id": "2",
-								"movie_name": "Movie 2",
-								"year": 2021,
-								"category": "Drama",
-								"movie_rating": 4.0,
-								"movie_url" : "images/gallery-lifestyle-07-970x524.jpg"
-							},
-							{
-								"movie_id": "3",
-								"movie_name": "Movie 3",
-								"year": 2020,
-								"category": "Comedy",
-								"movie_rating": 3.6,
-								"movie_url" : "images/gallery-lifestyle-07-970x524.jpg"
-							}
-						]
-					}
-				]
-			}
-			var obj = $.parseJSON(JSON.stringify(text));
+		function getUserInfo() {
+			let username = sessionStorage.getItem("username");
 			var list_names = [];
 			var all_movies_list = [];
 			var lists_ids = ["#lifestyle", "#portrait", "#fashion", "#nature", "#city", "#country"];
-			$.each(obj, function(key ,value) {
-				$.each(value, function(key, value) {
-					$("#main-gallery").append('<li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-gallery-' + value.list_id + '" data-toggle="tab"><img src="' + value.movies[0].movie_url +'" alt="" width="180" height="180"/><span>' + value.list_name + '</span></a></li>')
-					list_names.push(value.list_name);
-					var movies_list = [];
-					$.each(value.movies, function(key, value) {
-						movies_list.push(`<a class="gallery-item" href="` + value.movie_url + `" data-lightgallery="item">
-							<figure><img src="` + value.movie_url + `" alt="" width="970" height="524"/>
+			$.ajax({
+			  type: "GET",
+			  url: "http://localhost:3000/username/" + username,
+			  dataType: "json",
+			  contentType: "application/json",
+			  headers: {
+				"Authorization": "Bearer " + accessToken
+			},
+			success: function(data){
+				var counter = 0
+				$.each(data[0].lists, function(key, value) {
+				  key++
+				  $("#main-gallery").append('<li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-gallery-' + key + '" data-toggle="tab"><img src="' + "../sample-data/gump.jpg" +'" alt="" width="180" height="180"/><span>' + value.name + '</span></a></li>')
+				  list_names.push(value.name);
+				  var movies_list = [];
+				  $.ajax({
+					type: "GET",
+					url: "http://localhost:3000/listedmovies/" + value.id,
+					contentType: "application/json",
+					dataType: 'json',
+					headers: {
+					  "Authorization": "Bearer " + accessToken
+					},
+					success: function(data){
+						$.each(data, function(key, value) {
+							movies_list.push(`<a class="gallery-item" href="` + "../sample-data/gump.jpg" + `" data-lightgallery="item">
+							<figure><img src="` + "../sample-data/gump.jpg" + `" alt="" width="970" height="524"/>
 							</figure>
 							<div class="caption"><span class="icon novi-icon fa-expand"></span></div>
 					    </a>`)
-					});
-					all_movies_list.push(movies_list);
-					movies_list = [];
-				});
-			});
+						});
+						all_movies_list.push(movies_list);
+						movies_list = [];
+					},
+					error: function(xhr, textStatus, error){
+						alert("error")
+					}
+					}).done(function() {
+						counter++;
+						if (counter == data[0].lists.length) {
+							counter = 0;
+							list_names.forEach((element, index) => {
+								$(lists_ids[index] + "-name").text(element);
+							});
+							//console.log(all_movies_list)
+							all_movies_list.forEach((element, index) => {
+								//console.log(index)
+								//console.log(lists_ids[index])
+								$(lists_ids[index] + "-list").append(element);
+							})
+							loadView();
+						}
 
-			list_names.forEach((element, index) => {
-				$(lists_ids[index] + "-name").text(element);
+					})
+				})
+			},
+			error: function(xhr, textStatus, error){
+				alert("error")
+			}
 			});
-
-			all_movies_list.forEach((element, index) => {
-				$(lists_ids[index] + "-list").append(element);
-			});
-			loadView();
-			
 		}
 	});
 }());
