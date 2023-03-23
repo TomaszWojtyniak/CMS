@@ -583,10 +583,7 @@
 							list_names.forEach((element, index) => {
 								$(lists_ids[index] + "-name").text(element);
 							});
-							//console.log(all_movies_list)
 							all_movies_list.forEach((element, index) => {
-								//console.log(index)
-								//console.log(lists_ids[index])
 								$(lists_ids[index] + "-list").append(element);
 							})
 							loadView();

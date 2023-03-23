@@ -137,6 +137,38 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
+                <h3 class="card-title">Add list</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body" id="add_tables">
+                <table id="add_list_table" class="table table-bordered table-hover">
+                  <thead>
+                  <tr>
+                    <th>List name</th>
+                    <th>Movie IDs</th>
+                  </tr>
+                  </thead>
+                  <tbody id="add_list_body">
+                    <tr>
+                      <td>
+                        <input type="text" id="list_name" name="list_name">
+                      </td>
+                      <td>
+                        <select id="movie_ids_list" name="movie_ids" multiple>
+                          <option value="">--Please choose a movie id--</option>
+                        </select>
+                      </td>
+                      <td>
+                        <button id='add_list_button' class='bg-primary'>Add</button>
+                      </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <div class="card">
+              <div class="card-header">
                 <h3 class="card-title">Add movie</h3>
               </div>
               <!-- /.card-header -->
